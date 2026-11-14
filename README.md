@@ -6,3 +6,5 @@
 
 ### Resources:
 https://www.spaceappschallenge.org/2026/challenges/health-monitoring-software/?tab=resources
+https://osdr.nasa.gov/bio/repo/data/studies/OSD-571
+https://osdr.nasa.gov/bio/repo/data/studies/OSD-575

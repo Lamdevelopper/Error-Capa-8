@@ -1,0 +1,170 @@
+/* claude-80s-layout — layout de Iluikali.pptx con estética sobria.
+   Estado = escala de INTENSIDAD de un solo tono (validada, ordinal):
+     estable (tinta tenue) → observar #6f6450 → atención #a8843f → prioritario #e0a83a
+   El coral #e5574d queda reservado al nivel Crítico y al SOS. */
+
+:root {
+  --int1: #6f6450;
+  --int2: #a8843f;
+  --int3: #e0a83a;
+  --crit: #e5574d;
+  --warn: var(--int2);       /* tramos fuera de banda en gráficas */
+  --ok: rgba(243, 230, 207, 0.55);
+}
+/* Sobriedad: sin retícula de puntos */
+body { background: var(--bg); }
+
+/* Métricas: observar = anillo hueco tono bajo; atención = punto lleno tono medio */
+.s-ok { --st: var(--ink-3); --edge: rgba(243, 230, 207, 0.22); --fill: transparent; }
+.s-warn { --st: var(--int1); --edge: var(--int1); --fill: transparent; }
+.s-alert { --st: var(--int2); --edge: var(--int2); --fill: var(--int2); }
+/* Personas: misma escala + prioritario (tono alto) + crítico (coral) */
+.lvl0 { --st: var(--ink-3); --edge: rgba(243, 230, 207, 0.22); --fill: transparent; }
+.lvl1 { --st: var(--int1); --edge: var(--int1); --fill: transparent; }
+.lvl2 { --st: var(--int2); --edge: var(--int2); --fill: var(--int2); }
+.lvl3 { --st: var(--int3); --edge: var(--int3); --fill: var(--int3); }
+.lvl4 { --st: var(--crit); --edge: var(--crit); --fill: var(--crit); --tint: rgba(229, 87, 77, 0.06); }
+.frame.lvl3 { --b: 2.5px; }
+.frame.lvl4 { --b: 3px; }
+.badge.lvl0 { color: var(--ink-2); }
+.badge.s-warn, .badge.lvl1 { color: #b3a68c; }
+.badge.s-alert, .badge.lvl2 { color: var(--int2); }
+.badge.lvl3 { color: var(--int3); }
+.badge.lvl4 { color: var(--crit); }
+
+.shell { position: fixed; inset: 0; padding: max(18px, env(safe-area-inset-top)) max(22px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(22px, env(safe-area-inset-left)); display: flex; flex-direction: column; }
+.shell > * { flex: 1; min-height: 0; }
+.avatar.round img { border-radius: 50%; }
+.avatar.round .tag-shape { right: 2%; bottom: 2%; width: 30%; height: 30%; }
+
+/* ---------- Racha: 7 casillas de píxel ---------- */
+.streak { display: flex; align-items: center; gap: 10px; }
+.streak-k { font-size: 13px; color: var(--ink-3); letter-spacing: 0.08em; }
+.streak-px { display: inline-flex; gap: 4px; }
+.streak-px i { width: 12px; height: 12px; border: 1.5px solid var(--ink-4); display: block; }
+.streak-px i.on { background: var(--ink); border-color: var(--ink); }
+.streak-v { font-size: 14px; color: var(--ink-2); }
+.streak-v b { font-size: 18px; color: var(--ink); }
+
+/* ======================= 1. Escuadrón 2×2 ======================= */
+.squad { display: flex; flex-direction: column; gap: 16px; }
+.sq-head { display: flex; align-items: center; gap: 22px; padding-bottom: 12px; border-bottom: 2px solid var(--ink-4); }
+.sq-sum { font-size: 16px; color: var(--ink-2); }
+.sq-time { font-size: 14px; color: var(--ink-3); }
+.sq-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; }
+.sq-card { --pad: 0px; display: flex; flex-direction: column; min-height: 0; }
+.sq-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--ink-4); }
+.sq-card.sq-top .sq-cats { border-bottom: 2px solid var(--ink-4); }
+.sq-card.sq-bottom .sq-cats { border-top: 2px solid var(--ink-4); }
+.sq-cat {
+  position: relative; height: clamp(76px, 10vh, 104px); display: flex; align-items: center; justify-content: center; gap: 14px;
+  background: var(--card); color: var(--ink-2); font-size: 15px;
+  box-shadow: inset 0 0 0 0 var(--st);
+}
+.sq-cat.s-warn, .sq-cat.s-alert { color: var(--ink); box-shadow: inset 0 -4px 0 0 var(--st); }
+.sq-card.sq-bottom .sq-cat.s-warn, .sq-card.sq-bottom .sq-cat.s-alert { box-shadow: inset 0 4px 0 0 var(--st); }
+.sq-cat .dot { position: absolute; top: 12px; right: 14px; }
+@media (hover: hover) and (pointer: fine) { .sq-cat:hover { background: var(--card-2); } }
+.sq-body { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 28px; text-align: left; }
+.sq-info { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; align-self: stretch; min-width: 0; }
+.sq-name { display: flex; flex-direction: column; gap: 4px; }
+.sq-name b { font: 600 clamp(30px, 2.6vw, 46px)/1 var(--sans); letter-spacing: -0.02em; }
+.sq-name b span { font-weight: 400; color: var(--ink-2); }
+.sq-name .mono-r { font-size: 15px; color: var(--ink-3); }
+.sq-state { display: flex; flex-direction: column; gap: 6px; }
+.sq-why { font: 500 clamp(16px, 1.2vw, 20px)/1.3 var(--sans); color: var(--ink); }
+.sq-body .avatar { --s: clamp(110px, 12vw, 170px) !important; }
+
+/* ======================= 2. Sección ======================= */
+.section { display: grid; grid-template-columns: clamp(110px, 9vw, 150px) minmax(0, 1fr); gap: 22px; }
+.sec-rail { display: grid; grid-template-rows: auto repeat(3, 1fr); gap: 2px; background: var(--ink-4); border-radius: 12px; overflow: hidden; }
+.sec-rail > button { background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; position: relative; }
+.rail-back { height: 110px; color: var(--cyan); }
+.rail-sec { color: var(--ink); opacity: 0.38; transition: opacity 200ms ease; }
+.rail-sec.on { opacity: 1; box-shadow: inset 4px 0 0 0 var(--ink); }
+.rail-sec.on.s-warn, .rail-sec.on.s-alert { box-shadow: inset 4px 0 0 0 var(--st); }
+.rail-sec .mono { font-size: 13px; }
+.rail-sec .dot { position: absolute; top: 14px; right: 14px; }
+.sec-main { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 18px; }
+.sec-head { display: flex; align-items: center; gap: 18px; }
+.who-tr { display: flex; align-items: center; gap: 16px; }
+.who-tr-t { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.who-tr-t b { font: 600 22px var(--sans); }
+.who-tr-t span { font-size: 13px; color: var(--ink-3); }
+.sec-foot { font-size: 12px; color: var(--ink-3); }
+
+/* 6 widgets 3×2: etiqueta · cifra grande · una línea */
+.tiles { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.tile-hit { display: flex; min-width: 0; min-height: 0; }
+.tile { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 26px 28px; --cut: 18px; }
+.tile-label { font: 500 clamp(18px, 1.35vw, 24px)/1.2 var(--sans); color: var(--ink); }
+.tile-value { display: flex; align-items: baseline; gap: 10px; margin-top: auto; }
+.tile-value b { font-size: clamp(52px, 5vw, 92px); color: var(--ink); }
+.tile-value.v-alert b { color: var(--int2); }
+.tile-value small { font-size: clamp(16px, 1.3vw, 24px); color: var(--ink-2); }
+.tile-sub { display: flex; align-items: center; gap: 12px; min-height: 22px; font-size: 13px; color: var(--ink-3); flex-wrap: wrap; }
+.tile-sub .badge { font-size: 13px; }
+.tile-delta { color: var(--ink-2); }
+.tile.nosensor { opacity: 0.5; }
+.tile.with-strip .tile-value { margin-top: 0; }
+.tile-strip { flex: 1; min-height: 60px; display: flex; }
+.tile.action .tile-value { margin-top: 0; }
+.tile-action { margin-top: auto; font: 500 clamp(16px, 1.2vw, 20px)/1.3 var(--sans); color: var(--ink); }
+.tile.action .btn { align-self: flex-start; }
+.btn.acked { border-color: var(--ink-3); color: var(--ink-2); }
+
+/* ======================= 3. Detalle ======================= */
+.det-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(260px, 20vw, 340px); gap: 18px; }
+.det-col { min-height: 0; display: grid; grid-template-rows: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; }
+.det-metric { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.det-top { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.det-top .tile-value { margin-top: 0; }
+.det-top .tile-value b { font-size: clamp(56px, 5vw, 84px); }
+.det-meta { display: flex; flex-direction: column; gap: 4px; }
+.det-top .seg { margin-left: auto; min-width: 220px; }
+.det-chart { flex: 1; min-height: 0; display: flex; }
+.det-two { min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.det-box { overflow-y: auto; }
+.det-box h3 { font-size: 18px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--ink-4); }
+.det-box p { font-size: 17px; line-height: 1.5; }
+.det-box p + p { margin-top: 10px; }
+.det-side { display: flex; flex-direction: column; gap: 14px; justify-content: flex-end; }
+.sos-big { flex: 1; max-height: 340px; flex-direction: column; border: 3px solid var(--crit); color: var(--crit); border-radius: 22px; white-space: normal; }
+.sos-big > span { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+.sos-big b { font: 700 48px var(--mono); letter-spacing: 0.08em; }
+.sos-big small { font: 400 14px var(--mono); text-transform: none; letter-spacing: 0; opacity: 0.85; }
+.sos-big.holding > span { color: #fff; }
+
+/* ---------- Adaptación ---------- */
+@media (max-height: 900px) {
+  .sq-body { padding: 14px 20px; }
+  .sq-cat { height: 64px; }
+  .tile { padding: 18px 20px; }
+  .rail-back { height: 80px; }
+}
+@media (max-width: 1100px), (max-aspect-ratio: 1/1) {
+  .sq-grid { grid-template-columns: 1fr; grid-template-rows: repeat(4, minmax(240px, auto)); overflow-y: auto; }
+  .sq-card.sq-top .sq-cats, .sq-card.sq-bottom .sq-cats { order: 0; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(170px, 1fr)); overflow-y: auto; }
+  .det-grid { grid-template-columns: 1fr; overflow-y: auto; }
+  .det-col { grid-template-rows: minmax(420px, auto) auto; }
+  .det-two { grid-template-columns: 1fr; }
+  .sos-big { max-height: 160px; min-height: 120px; }
+  .who-tr-t { display: none; }
+  .sq-sum, .sq-time { display: none; }
+}
+/* Cabecera compacta (iPad) */
+@media (max-height: 900px), (max-width: 1300px) {
+  .sq-head { gap: 14px; }
+  .sq-head .streak-k { display: none; }
+  .sq-head .sq-time { display: none; }
+  .sq-sum { font-size: 14px; white-space: nowrap; }
+  .streak-v { white-space: nowrap; }
+}
+/* Una columna: secciones siempre abajo y tarjetas que crecen con su contenido */
+@media (max-width: 1100px), (max-aspect-ratio: 1/1) {
+  .sq-grid { grid-template-rows: none; grid-auto-rows: auto; align-content: start; }
+  .sq-card { min-height: auto; }
+  .sq-card.sq-top .sq-cats { order: 2; border-bottom: 0; border-top: 2px solid var(--ink-4); }
+  .sq-body { min-height: 200px; }
+}

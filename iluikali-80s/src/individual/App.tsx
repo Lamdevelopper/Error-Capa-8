@@ -38,7 +38,7 @@ export default function App() {
   const crew = s.crew
   const key = fixed ?? loc.me
   const st = crew.list.map(a => crew.byId[a.id]!).find(x => x.astro.key === key)
-  if (!st) return <><Pick crew={crew} /><DataOverlays /></>
+  if (!st) return <div className="me"><Pick crew={crew} /><DataOverlays /></div>
 
   const [section, cat, metric] = parts
   const c = (CATEGORIES.find(x => x.id === cat)?.id ?? st.worstCat) as CategoryId
@@ -152,7 +152,7 @@ function CheckInCard({ st }: { st: AstroState }) {
   const last = lastCheckin(loc, st.astro.key)
   const fresh = last && Date.now() - last.at < 12 * 3_600_000
   const [editing, setEditing] = useState(!fresh)
-  const [v, setV] = useState<Record<string, number>>(() => (last ? { energy: last.energy, mood: last.mood, sleep: last.sleep } : {}))
+  const [v, setV] = useState<Record<string, number>>(() => (last ? { energy: last.energy, mood: last.mood, sleep: last.sleep } : ({} as Record<string, number>)))
   const complete = DIMS.every(d => v[d.k])
   const notes = fresh && !editing ? compare(last as CheckIn, st) : []
 

@@ -40,7 +40,7 @@ export function Widget({ m, onOpen, voice, k = 0 }: { m: Metric; onOpen: () => v
           <Badge status={m.status} />
         </div>
         <div className="w-value">
-          <b className="num">{fmtValue(m)}</b><small className="mono">{m.def.unit}</small>
+          <b className="num">{fmtValue(m)}</b><small className="unit">{m.def.unit}</small>
         </div>
         <div className="w-delta mono-r">{delta ? `${delta} vs. ${voice === 'self' ? 'tu' : 'su'} base` : ' '}</div>
         <ChartBox m={m} axes />
@@ -92,7 +92,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
   const week = m.week.filter(p => p.v !== null)
   const sub = d.chart === 'hypno' ? (range === 'day' ? 'Anoche' : 'Últimas 7 noches') : range === 'day' ? 'Últimas 24 h' : 'Últimos 7 días'
   const exp = m.expected
-  const base = exp === null ? '—' : d.id === 'circ' ? '0 h' : `${exp.toFixed(d.decimals).replace('.', ',')} ${d.unit}`
+  const base = exp === null ? '—' : d.id === 'circ' ? '0 h' : `${exp.toFixed(Math.max(d.decimals, d.id === 'sleep' ? 1 : 0)).replace('.', ',')} ${d.unit}`
 
   // franja de datos clave
   const night = m.nights?.[m.nights.length - 1]
@@ -109,13 +109,15 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
       ]
     })()
     : (() => {
-      const vs = m.day.map(p => p.v).filter((v): v is number => v !== null)
-      const f = (v: number) => v.toFixed(d.decimals).replace('.', ',')
+      const daily = d.chart === 'circadian'
+      const vs = (daily ? m.week : m.day).map(p => p.v).filter((v): v is number => v !== null)
+      const f = (v: number) => (daily && v > 0 ? '+' : '') + v.toFixed(Math.max(d.decimals, daily ? 1 : 0)).replace('.', ',')
+      const span = daily ? '7 d' : '24 h'
       return [
         [voice === 'self' ? 'Tu base' : 'Su base', base],
         ['Desviación', fmtDelta(m) || '—'],
-        ['Mín 24 h', vs.length ? f(Math.min(...vs)) : '—'],
-        ['Máx 24 h', vs.length ? f(Math.max(...vs)) : '—'],
+        [`Mín ${span}`, vs.length ? f(Math.min(...vs)) : '—'],
+        [`Máx ${span}`, vs.length ? f(Math.max(...vs)) : '—'],
       ]
     })()
 
@@ -125,7 +127,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
         <div className="dm-head">
           <span className="dm-icon"><Icon name={d.icon} size={44} stroke={1.5} /></span>
           <div className="dm-value">
-            <div className="dm-row"><b className="num">{fmtValue(m)}</b><small className="mono">{d.unit}</small><Badge status={m.status} big /></div>
+            <div className="dm-row"><b className="num">{fmtValue(m)}</b><small className="unit">{d.unit}</small><Badge status={m.status} big /></div>
             <span className="mono-r muted">{sub}{d.estimated ? ' · estimado' : ''}</span>
           </div>
           <Segmented small label="Periodo" value={range} onChange={setRange}
@@ -148,7 +150,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
           <h3 className="mono">Registro</h3>
           <dl className="rec">
             <div><dt>Origen</dt><dd>{dataset?.origin ?? '—'}</dd></div>
-            <div><dt>Periodo</dt><dd>{period(week.length ? week[0].t : 0, crew.now, d.chart)}</dd></div>
+            <div><dt>Periodo</dt><dd>{period(week.length && week[0].t > 1e9 ? week[0].t : crew.now - 6 * 86_400_000, crew.now)}</dd></div>
             <div><dt>Estado</dt><dd className={`s-${m.status} st`}>{STATUS_LABEL[m.status]}</dd></div>
             <div><dt>{voice === 'self' ? 'Tu base' : 'Base personal'}</dt><dd>{base}</dd></div>
             <div><dt>Rama</dt><dd>{SCENARIO_LABEL(crew.scenario)}</dd></div>
@@ -182,10 +184,10 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
   )
 }
 
-function period(t0: number, t1: number, chart: string) {
-  if (!t0) return '—'
+function period(t0: number, t1: number) {
+  if (!t1) return '—'
   const f = (t: number) => new Date(t).toLocaleDateString('es', { day: 'numeric', month: 'short', timeZone: 'UTC' }).replace('.', '').toUpperCase()
-  return chart === 'hypno' || chart === 'circadian' ? `${f(t0)} – ${f(t1)}` : `${f(t0)} – ${f(t1)}`
+  return `${f(t0)} – ${f(t1)}`
 }
 
 const Legend = ({ items }: { items: [string, string][] }) => (
@@ -255,7 +257,7 @@ export function FileErrorSheet() {
   return (
     <Sheet title="Error de archivo" status="alert" onClose={() => data.clearFileError()}>
       <p>No se pudo leer <b className="mono-r">{fileError.file}</b>.</p>
-      <p>{fileError.message}. Revisa que sea CSV o JSON y que tenga <span className="mono-r">astronaut_id</span> y <span className="mono-r">timestamp_utc</span>.</p>
+      <p>{fileError.message.replace(/^[^:]+:\s*/, '').replace(/^./, c => c.toUpperCase())}. Revisa que sea CSV o JSON y que tenga <span className="mono-r">astronaut_id</span> y <span className="mono-r">timestamp_utc</span>.</p>
       <div className="sheet-actions">
         <button className="btn primary press" onClick={() => { data.clearFileError(); setLoad(true) }}>Elegir otro archivo</button>
         <button className="btn press" onClick={() => data.clearFileError()}>Cancelar</button>

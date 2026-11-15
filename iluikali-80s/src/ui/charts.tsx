@@ -39,7 +39,7 @@ function Body(p: P & { kind: ChartKind; range: Range }) {
   if (kind === 'hypno') return range === 'week' ? <SleepWeek {...p} /> : <Hypnogram night={p.m.nights?.[p.m.nights.length - 1]} {...p} />
   if (kind === 'circadian') return range === 'week' ? <DailyBars {...p} /> : <Dial {...p} />
   if (kind === 'gauge' && range === 'day') return <Gauge {...p} />
-  return <Series {...p} kind={kind === 'gauge' || kind === 'hypno' || kind === 'circadian' ? 'area' : kind} range={range} />
+  return <Series {...p} kind={kind === 'gauge' ? 'area' : kind} range={range} />
 }
 
 const Empty = ({ w, h }: { w: number; h: number }) => <text x={w / 2} y={h / 2} textAnchor="middle" className="lbl">SIN LECTURAS</text>
@@ -196,7 +196,7 @@ function Gauge({ m, w, h, big, anim }: P) {
       {big && (
         <>
           <text x={cx} y={cy + 10} textAnchor="middle" className="gauge-v">{fmt(m.value, m.def.decimals)}</text>
-          <text x={cx} y={cy + 36} textAnchor="middle" className="gauge-u">{m.def.unit.toUpperCase()}</text>
+          <text x={cx} y={cy + 36} textAnchor="middle" className="gauge-u">{m.def.unit}</text>
         </>
       )}
     </g>
@@ -318,7 +318,7 @@ function DailyBars({ m, w, h, anim }: P) {
 // ---------- Dial día/noche: sol, luna, horario previsto y reloj interno ----------
 function Dial({ m, w, h, big, anim }: P) {
   const cx = w / 2, cy = h / 2
-  const R = Math.max(12, Math.min(w, h) / 2 - (big ? 44 : 10))
+  const R = Math.max(12, Math.min(w, h) / 2 - (big ? 78 : 10))
   const shift = m.value ?? 0
   const now = m.hourNow ?? 0
   // mediodía arriba, medianoche abajo; 06 a la izquierda y 18 a la derecha
@@ -362,10 +362,10 @@ function Dial({ m, w, h, big, anim }: P) {
       })}
       {melPath && <path d={melPath} fill="none" stroke="var(--cyan)" strokeWidth={big ? 1.75 : 1} strokeDasharray={big ? '3 3' : undefined} opacity={0.85} className={anim ? 'fade-in' : ''} />}
       <Hand cx={cx} cy={cy} deg={((now - 12) / 24) * 360} len={R * 0.6} big={big} />
-      <Body x={pt(sunHr, rr)[0]} y={pt(sunHr, rr)[1]} r={bodyR} kind="sun" active={!asleep} />
-      <Body x={pt(moonHr, rr)[0]} y={pt(moonHr, rr)[1]} r={bodyR} kind="moon" active={asleep} />
+      <Orb x={pt(sunHr, rr)[0]} y={pt(sunHr, rr)[1]} r={bodyR} kind="sun" active={!asleep} />
+      <Orb x={pt(moonHr, rr)[0]} y={pt(moonHr, rr)[1]} r={bodyR} kind="moon" active={asleep} />
       {big && (
-        <text x={cx} y={cy + R * 0.3} textAnchor="middle" className="strong" style={{ fontSize: 15 }}>{asleep ? 'NOCHE' : 'DÍA'}</text>
+        <text x={cx} y={asleep ? cy - R * 0.42 : cy + R * 0.48} textAnchor="middle" className="strong" style={{ fontSize: 15 }}>{asleep ? 'NOCHE' : 'DÍA'}</text>
       )}
     </g>
   )
@@ -384,8 +384,8 @@ function Hand({ cx, cy, deg, len, big }: { cx: number; cy: number; deg: number; 
 }
 
 /** Sol pixelado y luna en cuarto; el astro inactivo se atenúa. */
-function Body({ x, y, r, kind, active }: { x: number; y: number; r: number; kind: 'sun' | 'moon'; active: boolean }) {
-  const op = active ? 1 : 0.35
+function Orb({ x, y, r, kind, active }: { x: number; y: number; r: number; kind: 'sun' | 'moon'; active: boolean }) {
+  const op = active ? 1 : 0.55
   if (kind === 'sun') {
     return (
       <g opacity={op}>
@@ -401,7 +401,7 @@ function Body({ x, y, r, kind, active }: { x: number; y: number; r: number; kind
   const d = `M${x},${y - r}A${r},${r} 0 1 0 ${x},${y + r}A${r * 0.72},${r} 0 1 1 ${x},${y - r}Z`
   return (
     <g opacity={op}>
-      <circle cx={x} cy={y} r={r * 1.5} fill="var(--bg)" />
+      <circle cx={x} cy={y} r={r * 1.45} fill="var(--bg)" stroke="var(--ink-3)" strokeWidth={1.5} />
       <path d={d} fill="var(--ink)" />
     </g>
   )

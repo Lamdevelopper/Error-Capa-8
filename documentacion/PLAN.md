@@ -1,5 +1,10 @@
 # PLAN.md — plan de trabajo ejecutable
 
+## Frontend increment · 2026-11-14
+
+The current user-approved crew-screen brief is implemented under `Website/`: four symbolic crew identities, three categories, metric trends, guided check-in, local synthetic journal and a simulated ground-link state. This delivers the frontend portion of F1/F4 only. Backend, watch, sensor and AI integration tasks below remain pending. See `Website/README.md` and `DECISIONS.md` for scope and verification.
+
+
 **Objetivo:** crear una demo operativa de monitoreo y evaluación preventiva, científicamente trazable, con interfaz PC y reloj Samsung. **Demo-first.**  
 **Estado inicial:** planificación. No asumir que hay aplicación, datasets descargados, reloj disponible ni acceso a APIs externas.  
 **Regla:** cada fase termina con una demo verificable y una decisión go/no-go.

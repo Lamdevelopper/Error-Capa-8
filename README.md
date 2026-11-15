@@ -1,4 +1,9 @@
 # NASA SPACE APPS 2026
+
+## Frontend demo
+
+The crew wellbeing frontend is in [`Website/`](Website/README.md). Run `npm ci` and `npm run dev` from that directory. It includes the crew overview, individual categories, interactive trends, guided check-ins and a local demonstration journal. All crew and measurements are synthetic; sensor/backend/AI integration is a separate step.
+
 ## Matias L, Adrian T, Santiago H, Antonio M y Akira M
 
 ### 1) Monitoring Software for Astronauts on Space Missions

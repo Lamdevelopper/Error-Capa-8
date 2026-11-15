@@ -9,6 +9,7 @@ import { statusOfZ } from '../core/logic/status'
 import { data, stamp, useData, useIdle } from '../core/logic/store'
 import { Avatar } from '../ui/Avatar'
 import { Boot, catDef, categoryWorst, DataOverlays, DxBanner, fmtValue, LoadSheet, MetricDetail, Widget } from '../ui/blocks'
+import { Sparkline } from '../ui/charts'
 import { Icon } from '../ui/Icon'
 import { Frame, LevelBadge, Segmented, Signature } from '../ui/primitives'
 
@@ -161,6 +162,8 @@ function CrewCard({ st, k }: { st: AstroState; k: number }) {
           </>
         )}
       </div>
+      {/* una sola gráfica: la métrica que causa la alerta, últimas 24 h frente a su banda personal */}
+      {st.level > 0 && motor && <div className="cc-spark"><Sparkline m={motor} /></div>}
       <div className="cc-cats">
         {CATEGORIES.map(c => {
           const s = st.cats[c.id]

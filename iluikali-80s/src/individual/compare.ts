@@ -28,7 +28,7 @@ export function compare(c: CheckIn, st: AstroState): Note[] {
       const delta = fmtDelta(m)
       hidden.push({
         tone: m.status,
-        text: `Te sientes ${d.good}, pero ${m.def.id === 'sleep' ? `dormiste ${String(m.value?.toFixed(1)).replace('.', ',')} h` : `tu ${m.def.label.toLowerCase()} está ${delta ? `${delta} frente a tu base` : 'fuera de tu base'}`}. Tómalo con calma hoy.`,
+        text: `Te sientes ${d.good}, pero ${m.def.id === 'sleep' ? `dormiste ${String(m.value?.toFixed(1)).replace('.', ',')} h` : `tu ${m.def.label.toLowerCase()} está ${delta ? `${delta} frente a tu base` : 'fuera de tu base'}`}. Tenlo en cuenta hoy.`,
       })
     } else if (v <= 2 && !m) {
       felt.push({ tone: 'warn', text: `Tus indicadores de ${k === 'energy' ? 'energía' : k === 'mood' ? 'ánimo' : 'sueño'} están en tu base, pero te sientes ${d.bad}. Lo que sientes cuenta: coméntalo con alguien de confianza.` })

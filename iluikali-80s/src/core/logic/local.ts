@@ -6,7 +6,8 @@ import { useSyncExternalStore } from 'react'
  * dispositivo (localStorage). Si el almacenamiento falla, la app sigue funcionando en memoria.
  */
 
-export interface Ack { astro: string; metric: string; at: number }
+/** `level`: nivel de la persona al revisar; si el nivel cambia, la revisión deja de atenuar. */
+export interface Ack { astro: string; metric: string; at: number; level?: number }
 export interface CheckIn { astro: string; at: number; energy: number; mood: number; sleep: number }
 
 interface LocalState { acks: Ack[]; checkins: CheckIn[]; me?: string }
@@ -29,8 +30,8 @@ function set(next: Partial<LocalState>) {
 }
 
 export const local = {
-  ack(astro: string, metric: string) {
-    set({ acks: [...state.acks.filter(a => !(a.astro === astro && a.metric === metric)), { astro, metric, at: Date.now() }] })
+  ack(astro: string, metric: string, level?: number) {
+    set({ acks: [...state.acks.filter(a => !(a.astro === astro && a.metric === metric)), { astro, metric, at: Date.now(), level }] })
   },
   unack(astro: string, metric: string) {
     set({ acks: state.acks.filter(a => !(a.astro === astro && a.metric === metric)) })

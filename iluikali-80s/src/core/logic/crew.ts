@@ -12,11 +12,20 @@ export interface AstroState {
   worstCat: CategoryId
   last: Reading
   dx: Diagnosis
-  /** 0 estable · 1 observar · 2 atención · 3 crítico (prioridad P4 del motor JEV) */
-  level: 0 | 1 | 2 | 3
+  /**
+   * 0 estable · 1 observar · 2 atención · 3 urgente · 4 crítico.
+   * El coral (3–4) solo aparece cuando el motor JEV escala (P3/P4) y alguna de sus
+   * métricas lo respalda: el rojo es una escalada, no un dato.
+   */
+  level: Level
   /** para ordenar quién va primero en la lista de atención */
   severity: number
 }
+export type Level = 0 | 1 | 2 | 3 | 4
+export const LEVEL_LABEL = ['Estable', 'Observar', 'Atención', 'Urgente', 'Crítico'] as const
+/** clase CSS del nivel: lvl0…lvl4 (estable, ámbar hueco, ámbar lleno, coral, coral con halo) */
+export const lvl = (l: Level) => `lvl${l}`
+
 export interface Crew {
   list: Astronaut[]
   byId: Partial<Record<AstroId, AstroState>>
@@ -106,16 +115,24 @@ export function buildCrew(ds: Dataset, scenario: string): Crew {
         : def.id === 'circ' ? circMetric(def, week, b, end)
         : seriesMetric(def, week, b, end))
       .filter(m => m.value !== null || m.week.some(p => p.v !== null))
+    // el reloj necesita las noches (inicio y duración reales) que calcula la métrica de sueño
+    const sleepM = metrics.find(m => m.def.id === 'sleep'), circM = metrics.find(m => m.def.id === 'circ')
+    if (sleepM && circM) circM.nights = sleepM.nights
 
     const cats = Object.fromEntries(CATEGORIES.map(c => [c.id, categoryStatus(metrics, c.id)])) as Record<CategoryId, Status>
     const st = worst([...Object.values(cats), priorityStatus(last.jev.priority)])
     const score = (c: CategoryId) =>
       rank(cats[c]) * 100 + metrics.filter(m => m.def.categories.includes(c)).reduce((s, m) => s + rank(m.status), 0)
     const worstCat = CATEGORIES.map(c => c.id).sort((x, y) => score(y) - score(x))[0]
-    const level = st === 'alert' ? (/P4/.test(last.jev.priority) ? 3 : 2) : st === 'warn' ? 1 : 0
+    const dx = diagnose(metrics, last, st, scenario)
+    const metricWorst = worst(Object.values(cats))
+    const level: Level = dx.supported && /P4/.test(last.jev.priority) ? 4
+      : dx.supported && /P3/.test(last.jev.priority) ? 3
+      : metricWorst === 'alert' ? 2
+      : metricWorst === 'warn' || st !== 'ok' ? 1 : 0
     const alerts = metrics.filter(m => m.status === 'alert').length
     const severity = level * 1000 + alerts * 10 + (100 - (last.jev.global ?? 100)) / 10
-    byId[a.id] = { astro: a, metrics, cats, worst: st, worstCat, last, level, severity, dx: diagnose(metrics, last, st, scenario) }
+    byId[a.id] = { astro: a, metrics, cats, worst: st, worstCat, last, level, severity, dx }
   }
   return { list: list.filter(a => byId[a.id]), byId, scenario, now }
 }

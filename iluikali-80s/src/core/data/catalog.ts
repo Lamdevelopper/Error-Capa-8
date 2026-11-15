@@ -31,7 +31,7 @@ export const SCHEDULE = { sleepStart: 0, sleepEnd: 8 }
 export const METRICS: MetricDef[] = [
   // ----- Sueño / energía -----
   {
-    id: 'sleep', label: 'Sueño', unit: 'h', icon: 'bed', chart: 'hypno', categories: ['sleep', 'mental'],
+    id: 'sleep', label: 'Sueño', unit: 'h', icon: 'bed', chart: 'hypno', categories: ['sleep'],
     decimals: 1, estimated: true,
     value: () => null, expected: () => 7.5, sigma: () => 0.6, bad: 'low',
     low: 'Durmió poco', high: 'Sueño largo',
@@ -44,7 +44,7 @@ export const METRICS: MetricDef[] = [
     },
   },
   {
-    id: 'circ', label: 'Ritmo circadiano', unit: 'h', icon: 'clock', chart: 'circadian', categories: ['sleep', 'mental'],
+    id: 'circ', label: 'Ritmo circadiano', unit: 'h', icon: 'clock', chart: 'circadian', categories: ['sleep'],
     decimals: 1, estimated: true,
     value: () => null, expected: () => 0, sigma: () => 0.8, bad: 'both',
     low: 'Reloj adelantado', high: 'Reloj atrasado',
@@ -143,7 +143,7 @@ export const METRICS: MetricDef[] = [
     },
   },
   {
-    id: 'hydration', label: 'Hidratación', unit: 'mmol/L Na⁺', icon: 'drop', chart: 'area', categories: ['general'],
+    id: 'hydration', label: 'Sodio en sudor', unit: 'mmol/L', icon: 'drop', chart: 'area', categories: ['general'],
     decimals: 0,
     value: col('sweat_na_mmol_L'), expected: base('sweat_na_mmol_L'), sigma: e => e * 0.2, bad: 'high',
     low: 'Sodio bajo', high: 'Deshidratación',

@@ -6,19 +6,19 @@ import { Icon } from './Icon'
 /** Glifo de estado: legible a 2–3 m además del color. */
 export const GLYPH: Record<Status, string> = { ok: '●', warn: '▲', alert: '✕' }
 
-export function Frame({ status, crit, quiet, className = '', style, children, as: Tag = 'section', ...rest }: {
-  status?: Status; crit?: boolean; quiet?: boolean; className?: string; style?: CSSProperties; children: ReactNode
+export function Frame({ status, level, quiet, className = '', style, children, as: Tag = 'section', ...rest }: {
+  status?: Status; level?: number; quiet?: boolean; className?: string; style?: CSSProperties; children: ReactNode
   as?: 'section' | 'div' | 'article' | 'aside'; 'aria-label'?: string
 }) {
-  const cls = ['frame', status ? `s-${status}` : '', crit ? 'crit' : '', quiet ? 'quiet' : '', className].filter(Boolean).join(' ')
+  const cls = ['frame', status ? `s-${status}` : '', level !== undefined ? `lvl${level}` : '', quiet ? 'quiet' : '', className].filter(Boolean).join(' ')
   return <Tag className={cls} style={style} {...rest}>{children}</Tag>
 }
 
 /** Firma "Flow": cinco cuadros y su estela de píxeles. Se ensambla una vez al cargar. */
 const PX = [1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1] // estela que se deshace
-export function Signature() {
+export function Signature({ mono }: { mono?: boolean }) {
   return (
-    <span className="sig" aria-hidden>
+    <span className={`sig ${mono ? 'mono-sig' : ''}`} aria-hidden>
       {[1, 2, 3, 4, 5].map(k => <i key={k} style={{ '--c': `var(--sig-${k})`, '--k': k } as CSSProperties} />)}
       <span className="px">
         {PX.map((on, k) => <i key={k} style={{ '--c': on ? `var(--sig-${5 - (k % 4)})` : 'transparent', '--k': k } as CSSProperties} />)}
@@ -27,10 +27,21 @@ export function Signature() {
   )
 }
 
-export function Badge({ status, label, big, crit }: { status: Status; label?: string; big?: boolean; crit?: boolean }) {
+/** Estado de una métrica (s-*): ámbar hueco u ámbar lleno. */
+export function Badge({ status, label, big }: { status: Status; label?: string; big?: boolean }) {
   return (
-    <span className={`badge s-${status} ${big ? 'big' : ''} ${crit ? 'crit' : ''}`}>
-      <span className="dot" />{label ?? (crit ? 'Crítico' : STATUS_LABEL[status])}
+    <span className={`badge s-${status} ${big ? 'big' : ''}`}>
+      <span className="dot" />{label ?? STATUS_LABEL[status]}
+    </span>
+  )
+}
+
+const LEVEL_LABEL = ['Estable', 'Observar', 'Atención', 'Urgente', 'Crítico']
+/** Nivel de una persona (lvl0–4): el coral aparece solo en urgente y crítico. */
+export function LevelBadge({ level, big }: { level: number; big?: boolean }) {
+  return (
+    <span className={`badge lvl${level} ${big ? 'big' : ''}`}>
+      <span className="dot" />{LEVEL_LABEL[level]}
     </span>
   )
 }

@@ -7,7 +7,7 @@ export type IconName =
   | 'moon' | 'plus' | 'brain' | 'heart' | 'lungs' | 'o2' | 'thermo' | 'drop'
   | 'bone' | 'rad' | 'wave' | 'run' | 'flask' | 'bolt' | 'bed' | 'back' | 'clock'
   | 'pulse' | 'grid' | 'expand' | 'shrink' | 'check' | 'stomach' | 'sun' | 'alert' | 'chevron'
-  | 'upload' | 'download' | 'x' | 'swap'
+  | 'upload' | 'download' | 'x' | 'swap' | 'info'
 
 // ---------- Datos crudos normalizados (lo que entrega cualquier fuente) ----------
 

@@ -5,9 +5,9 @@
 :root {
   color-scheme: dark;
   /* Superficies */
-  --bg: #0c0c0e;
-  --card: #121215;
-  --card-2: #1a1a1f;
+  --bg: #0d0c0b;
+  --card: #151412;
+  --card-2: #1d1b18;
   --dots: rgba(243, 230, 207, 0.075);
   /* Tinta crema */
   --ink: #f3e6cf;
@@ -17,17 +17,25 @@
   --line: rgba(243, 230, 207, 0.78);
   /* Firma de cinco colores */
   --sig-1: #e4573d; --sig-2: #f08a3c; --sig-3: #f5b642; --sig-4: #5fcf6a; --sig-5: #5fd3d3;
-  /* Series y fases de sueño */
-  --cyan: #5fd3d3;
-  --lav: #c9a2f0;
-  --rem: #c9a2f0;
-  --light: #5fd3d3;
-  --deep: #4f74c8;
+  /* Interactivo (solo enlaces, foco, pestaña activa) */
+  --cyan: #6ccfd8;
+  /* Datos: la serie es tinta; el color solo marca lo fuera de rango */
+  --series: rgba(243, 230, 207, 0.85);
+  --series-2: rgba(243, 230, 207, 0.45);
+  --band: rgba(243, 230, 207, 0.035);
+  --band-edge: rgba(243, 230, 207, 0.1);
+  --lav: #c6a8f5;
+  /* Fases de sueño: un solo tono, más oscuro = más profundo (validado, ordinal) */
+  --rem: #c6a8f5;
+  --light: #8a93d8;
+  --deep: #4b5bc0;
   --wake: #f3e6cf;
-  /* Estado (más saturado que la firma) */
-  --ok: #3ddc6f;
-  --warn: #ffcc1a;
-  --alert: #ff4b3a;
+  --night: #5e5ce6;
+  /* Estado: tres tonos validados (ΔE ≥ 15) + peso visual como cuarto nivel.
+     Ámbar = desviación de una métrica. Coral = escalada del sistema (P3/P4). */
+  --ok: #46a874;
+  --warn: #c99a3e;
+  --alert: #e5574d;
   /* Tipografía mixta */
   --mono: 'Space Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   --sans: 'Outfit', ui-rounded, system-ui, sans-serif;
@@ -65,20 +73,25 @@ a { color: inherit; }
 .h-title { font: 700 clamp(26px, 2.3vw, 38px)/1 var(--mono); text-transform: uppercase; letter-spacing: 0.03em; }
 .muted { color: var(--ink-2); }
 
-/* ---------- Estado ---------- */
-.s-ok { --st: var(--ok); --tint: transparent; --edge: var(--line); }
-.s-warn { --st: var(--warn); --tint: rgba(255, 204, 26, 0.06); --edge: var(--warn); }
-.s-alert { --st: var(--alert); --tint: rgba(255, 75, 58, 0.1); --edge: var(--alert); }
-.s-alert.crit { --tint: rgba(255, 75, 58, 0.17); }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--st); flex: none; }
+/* ---------- Estado ----------
+   Métricas (s-*): ámbar hueco = observar, ámbar lleno = fuera de rango. Nunca coral.
+   Personas (lvl0–4): estable, observar, atención, urgente (coral), crítico (coral + halo + tinte).
+   Sin tintes de fondo salvo crítico: el color vive en el punto, el borde y la cifra. */
+.s-ok, .lvl0 { --st: var(--ok); --edge: rgba(243, 230, 207, 0.3); --fill: var(--st); }
+.s-warn, .lvl1 { --st: var(--warn); --edge: rgba(201, 154, 62, 0.55); --fill: transparent; }
+.s-alert, .lvl2 { --st: var(--warn); --edge: var(--warn); --fill: var(--st); }
+.lvl3 { --st: var(--alert); --edge: var(--alert); --fill: var(--st); }
+.lvl4 { --st: var(--alert); --edge: var(--alert); --fill: var(--st); --tint: rgba(229, 87, 77, 0.06); }
+.acked { --edge: rgba(243, 230, 207, 0.22); --fill: transparent; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--fill, var(--st)); box-shadow: inset 0 0 0 2px var(--st); flex: none; }
 .badge { display: inline-flex; align-items: center; gap: 8px; font: 700 15px var(--mono); letter-spacing: 0.02em; color: var(--ink-2); white-space: nowrap; }
-.badge.s-warn, .badge.s-alert { color: var(--st); }
+.badge.s-warn, .badge.s-alert, .badge.lvl1, .badge.lvl2, .badge.lvl3, .badge.lvl4 { color: var(--st); }
 .badge .glyph { font-size: 0.85em; }
 .badge.big { font-size: clamp(18px, 1.5vw, 26px); gap: 10px; }
 .badge.big .dot { width: 13px; height: 13px; }
 /* Pulso lento solo en lo crítico */
-@keyframes breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 75, 58, 0.6); } 50% { box-shadow: 0 0 0 7px rgba(255, 75, 58, 0); } }
-.crit .dot { animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 0%, 100% { box-shadow: inset 0 0 0 2px var(--st), 0 0 0 0 rgba(229, 87, 77, 0.55); } 50% { box-shadow: inset 0 0 0 2px var(--st), 0 0 0 7px rgba(229, 87, 77, 0); } }
+.lvl4 .dot, .dot.lvl4 { animation: breathe 2.4s ease-in-out infinite; }
 
 /* ---------- Marco achaflanado: capa de borde + capa de contenido ---------- */
 .frame {
@@ -95,9 +108,8 @@ a { color: inherit; }
   clip-path: polygon(var(--c2) 0, calc(100% - var(--c2)) 0, 100% var(--c2), 100% calc(100% - var(--c2)), calc(100% - var(--c2)) 100%, var(--c2) 100%, 0 calc(100% - var(--c2)), 0 var(--c2));
 }
 .frame.quiet { --edge: var(--ink-4); }
-.frame.s-ok:not(.lit) { --edge: rgba(243, 230, 207, 0.45); }
-.frame.s-alert { --b: 2px; }
-.frame.s-alert.crit { --b: 3px; }
+.frame.lvl4 { --b: 3px; }
+.frame.s-warn, .frame.lvl1 { --b: 1.5px; }
 
 /* ---------- Botones ---------- */
 .press { transition: transform 160ms var(--ease-out); }
@@ -108,7 +120,7 @@ a { color: inherit; }
   border: 2px solid var(--ink); border-radius: 10px; color: var(--ink); white-space: nowrap; text-align: center;
 }
 .btn.primary { background: var(--ink); color: var(--bg); }
-.btn.danger { border-color: var(--alert); color: var(--alert); }
+.btn.danger { border-color: var(--line); color: var(--ink); }
 .btn.danger.primary { background: var(--alert); color: #fff; }
 .btn.block { width: 100%; }
 .btn.small { min-height: 40px; padding: 0 14px; font-size: 13px; border-radius: 8px; }
@@ -150,6 +162,19 @@ a { color: inherit; }
 .sig .px { display: grid; grid-template-columns: repeat(4, 5px); grid-auto-rows: 5px; gap: 2px; margin-left: 2px; }
 .sig .px i { width: 5px; height: 5px; animation-delay: calc(var(--k) * 30ms + 360ms); }
 @keyframes pop { from { opacity: 0; transform: scale(0.6); } }
+/* Fuera del inicio la firma es crema monocroma: no compite con el estado */
+.sig.mono-sig i { --c: var(--ink-3) !important; }
+.sig.mono-sig .px i[style*='transparent'] { --c: transparent !important; }
+
+/* ---------- Avatar con distintivo de figura ---------- */
+.avatar { position: relative; flex: none; width: var(--s); height: var(--s); }
+.avatar img { width: 100%; height: 100%; display: block; border-radius: 22%; image-rendering: pixelated; filter: grayscale(1) sepia(0.12) brightness(0.82) contrast(1.05); box-shadow: 0 0 0 2px var(--edge, rgba(243, 230, 207, 0.3)); }
+.avatar .tag-shape {
+  position: absolute; right: -8%; bottom: -8%; width: 42%; height: 42%; display: grid; place-items: center;
+  border-radius: 50%; background: var(--bg); box-shadow: 0 0 0 2px var(--bg); color: var(--ink);
+}
+.avatar .tag-shape .shape { width: 64%; height: 64%; }
+.avatar .dot { position: absolute; left: -4%; top: -4%; width: 26%; height: 26%; max-width: 16px; max-height: 16px; border: 2px solid var(--bg); box-sizing: content-box; }
 
 /* ---------- Gráficas ---------- */
 .chart { display: block; overflow: visible; }
@@ -166,6 +191,7 @@ a { color: inherit; }
 @keyframes draw { from { stroke-dashoffset: 1; } }
 .fade-in { animation: fade 500ms var(--ease-out) both; animation-delay: 250ms; }
 .hand { transition: transform 1100ms var(--ease-out); }
+.dial-rot { transition: transform 700ms var(--ease-out); }
 .xfade { animation: xfade 260ms var(--ease-out) both; }
 @keyframes xfade { from { opacity: 0; filter: blur(2px); } }
 

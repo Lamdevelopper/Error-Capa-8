@@ -9,8 +9,8 @@ import { data, stamp, useData, useIdle } from '../core/logic/store'
 import { Boot, catDef, categoryWorst, DataOverlays, DxBanner, fmtValue, labelOf, MetricDetail, Widget } from '../ui/blocks'
 import { Sparkline } from '../ui/charts'
 import { Icon } from '../ui/Icon'
-import { Badge, Frame, Segmented, Signature } from '../ui/primitives'
-import { Shape } from '../ui/Shape'
+import { Avatar } from '../ui/Avatar'
+import { Badge, Frame, LevelBadge, Segmented, Signature } from '../ui/primitives'
 import { compare } from './compare'
 
 /**
@@ -62,7 +62,7 @@ function Pick({ crew }: { crew: Crew }) {
         {crew.list.map((a, i) => (
           <button key={a.id} className="pick-hit press enter" style={{ '--k': i * 45 } as CSSProperties} onClick={() => { local.setMe(a.key); go('/') }}>
             <Frame className="pick-card" as="div">
-              <Shape id={a.id} stroke={2.5} />
+              <Avatar id={a.id} size={120} />
               <b>{a.name}</b>
               <span className="mono-r muted">{roleEs(a.role)}</span>
             </Frame>
@@ -74,21 +74,26 @@ function Pick({ crew }: { crew: Crew }) {
 }
 
 // ---------- Hoy ----------
-const PHRASE = {
-  ok: 'Vas bien hoy',
-  warn: 'Hay algo que vigilar hoy',
-  alert: 'Tu cuerpo pide descanso hoy',
-  crit: 'Necesitas atención ahora',
+/** La frase sale del mismo tema que la acción: nunca «descansa» seguido de «más ejercicio». */
+const PHRASE: Record<string, string> = {
+  calm: 'Hay algo que vigilar hoy',
+  rest: 'Tu cuerpo pide descanso hoy',
+  fluids: 'Tu cuerpo necesita líquidos',
+  radiation: 'Protégete de la radiación',
+  bone: 'Tus huesos necesitan carga',
+  oxygen: 'Revisa tu oxígeno',
+  stress: 'Baja el ritmo hoy',
 }
+const phraseOf = (st: AstroState) => (st.level === 0 ? 'Vas bien hoy' : st.level === 4 ? 'Necesitas atención ahora' : PHRASE[st.dx.theme] ?? PHRASE.calm)
 
 function Today({ crew, st, canSwitch }: { crew: Crew; st: AstroState; canSwitch: boolean }) {
   const { time, day } = stamp(crew.now, st.last.day)
   const first = st.astro.name.split(' ')[0]
-  const action = st.worst === 'ok' ? 'Sigue tu rutina. Todo está dentro de tu línea base.' : st.dx.actions[0]
+  const action = st.level === 0 ? 'Sigue tu rutina. Todo está dentro de tu línea base.' : st.dx.actions[0]
   return (
     <div className="today">
       <header className="top">
-        <span className={`top-shape vt-shape-${st.astro.id}`}><Shape id={st.astro.id} size={44} stroke={2.25} /></span>
+        <Avatar id={st.astro.id} size={52} level={`lvl${st.level}`} />
         <h1 className="h-title">Hola, {first}</h1>
         <Signature />
         <span className="top-fill" />
@@ -97,14 +102,14 @@ function Today({ crew, st, canSwitch }: { crew: Crew; st: AstroState; canSwitch:
       </header>
 
       <div className="today-grid">
-        <Frame status={st.worst} crit={st.level === 3} className="hero enter">
-          <Badge status={st.worst} big crit={st.level === 3} />
-          <h2 className="hero-phrase">{st.level === 3 ? PHRASE.crit : PHRASE[st.worst]}</h2>
+        <Frame level={st.level} className="hero enter">
+          <LevelBadge level={st.level} big />
+          <h2 className="hero-phrase">{phraseOf(st)}</h2>
           <div className="hero-next">
             <span className="mono">Tu siguiente acción</span>
             <p>{action}</p>
           </div>
-          {st.worst !== 'ok' && (
+          {st.level > 0 && (
             <div className="hero-why">
               <span className="mono">Por qué · {st.dx.title}</span>
               <div className="dx-ind">
@@ -126,7 +131,7 @@ function Today({ crew, st, canSwitch }: { crew: Crew; st: AstroState; canSwitch:
           const s = st.cats[c.id]
           return (
             <button key={c.id} className="cat-hit press enter" style={{ '--k': 120 + i * 40 } as CSSProperties} onClick={() => go(`/c/${c.id}`)}>
-              <Frame status={s} className="cat-card" as="div">
+              <Frame status="ok" className="cat-card" as="div">
                 <span className="chip-head"><Icon name={c.icon} size={24} /><span className="mono">{c.label}</span><Badge status={s} /></span>
                 {m && <span className="cat-line mono-r">{labelOf(m, 'self')} · <b className="num">{fmtValue(m)}</b> {m.def.unit}</span>}
                 {m && <Sparkline m={m} />}
@@ -188,7 +193,7 @@ function CheckInCard({ st }: { st: AstroState }) {
           <div className="ck-notes">
             {notes.map((n, i) => (
               <p key={i} className={`note s-${n.tone} enter`} style={{ '--k': i * 80 } as CSSProperties}>
-                <Icon name={n.tone === 'ok' ? 'check' : 'alert'} size={20} />{n.text}
+                <Icon name={n.tone === 'ok' ? 'check' : 'info'} size={20} />{n.text}
               </p>
             ))}
           </div>
@@ -222,15 +227,15 @@ function MyCategory({ st, cat }: { st: AstroState; cat: CategoryId }) {
     <div className="member">
       <header className="top">
         <button className="icon-btn press" onClick={() => go('/')} aria-label="Volver a hoy"><Icon name="back" size={26} /></button>
-        <span className={`top-shape vt-shape-${st.astro.id}`}><Shape id={st.astro.id} size={40} stroke={2.25} /></span>
+        <Avatar id={st.astro.id} size={44} level={`lvl${st.level}`} />
         <h1 className="h-title">Tus indicadores</h1>
-        <Signature />
+        <Signature mono />
         <span className="top-fill" />
         <span className="mono-r muted hint">← desliza →</span>
       </header>
       <Segmented label="Categoría" value={cat} onChange={c => go(`/c/${c}`, false)}
         options={CATEGORIES.map(c => ({ id: c.id, label: <><Icon name={c.icon} size={22} />{c.short}<span className={`dot s-${st.cats[c.id]}`} /></> }))} />
-      <DxBanner st={st} voice="self" onOpen={m => go(`/c/${m.def.categories.includes(cat) ? cat : m.def.categories[0]}/${m.def.id}`)} />
+      <DxBanner st={st} voice="self" cat={cat} onOpen={m => go(`/c/${m.def.categories.includes(cat) ? cat : m.def.categories[0]}/${m.def.id}`)} />
       <motion.div key={cat} className={`widget-grid n${list.length} swipe`}
         drag="x" dragConstraints={{ left: 0, right: 0 }} dragElastic={0.16} dragMomentum={false}
         onDragStart={() => { dragged.current = true }} onDragEnd={onDragEnd}
@@ -238,7 +243,7 @@ function MyCategory({ st, cat }: { st: AstroState; cat: CategoryId }) {
         initial={reduce || !dir ? { opacity: 0 } : { opacity: 0, x: dir * 48 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ type: 'spring', bounce: dir ? 0.15 : 0, duration: 0.4 }}>
-        {list.map(m => <Widget key={m.def.id} m={m} voice="self" onOpen={() => go(`/c/${cat}/${m.def.id}`)} />)}
+        {list.map(m => <Widget key={m.def.id} m={m} voice="self" emph={st.dx.indicators.filter(x => x.def.categories.includes(cat)).slice(0, 2).some(x => x.def.id === m.def.id)} onOpen={() => go(`/c/${cat}/${m.def.id}`)} />)}
       </motion.div>
     </div>
   )
@@ -255,9 +260,9 @@ function MyDetail({ crew, st, cat, metric }: { crew: Crew; st: AstroState; cat: 
           <h1 className="h-title">{labelOf(m, 'self')}</h1>
           <span className="mono-r muted">{catDef(cat).label}</span>
         </div>
-        <Signature />
+        <Signature mono />
         <span className="top-fill" />
-        <span className={`top-shape vt-shape-${st.astro.id}`}><Shape id={st.astro.id} size={40} stroke={2.25} /></span>
+        <Avatar id={st.astro.id} size={44} level={`lvl${st.level}`} />
       </header>
       <MetricDetail st={st} m={m} crew={crew} voice="self" />
     </div>

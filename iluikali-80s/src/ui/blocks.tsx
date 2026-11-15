@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { CATEGORIES } from '../core/data/catalog'
+import { CATEGORIES, SCHEDULE } from '../core/data/catalog'
 import type { CategoryId, Metric, Status } from '../core/data/types'
 import { SCENARIO_LABEL, type AstroState, type Crew } from '../core/logic/crew'
 import { fmtDelta } from '../core/logic/explain'
@@ -12,7 +12,7 @@ import { Badge, Frame, HoldButton, Segmented, Sheet } from './primitives'
 
 /** Tercera persona en la tableta común; segunda persona en el dispositivo personal. */
 export type Voice = 'crew' | 'self'
-const SELF_LABEL: Record<string, string> = { bone: 'Tus huesos', hydration: 'Tu hidratación', sleep: 'Tu sueño', energy: 'Tu energía' }
+const SELF_LABEL: Record<string, string> = { bone: 'Tus huesos', hydration: 'Tu sodio en sudor', sleep: 'Tu sueño', energy: 'Tu energía' }
 export const labelOf = (m: Metric, v: Voice) => (v === 'crew' ? m.def.label : SELF_LABEL[m.def.id] ?? `Tu ${m.def.label.toLowerCase()}`)
 
 export const fmtValue = (m: Metric) => {
@@ -26,53 +26,61 @@ const hm = (min: number) => `${Math.floor(min / 60)} h ${String(Math.round(min %
 const hhmm = (min: number) => `${String(Math.floor(min / 60) % 24).padStart(2, '0')}:${String(Math.round(min % 60)).padStart(2, '0')}`
 
 // ---------- Widget de métrica ----------
-export function Widget({ m, onOpen, voice, k = 0 }: { m: Metric; onOpen: () => void; voice: Voice; k?: number }) {
+/** `emph`: es una de las métricas que causan la alerta; solo esas llevan borde de color (dieta de ámbar). */
+export function Widget({ m, onOpen, voice, k = 0, emph = false }: { m: Metric; onOpen: () => void; voice: Voice; k?: number; emph?: boolean }) {
   const off = m.status !== 'ok'
   const delta = off ? fmtDelta(m) : ''
   return (
     <button className="widget-hit press enter" onClick={onOpen} style={{ '--k': k } as CSSProperties}
       aria-label={`${labelOf(m, voice)}: ${fmtValue(m)} ${m.def.unit}, ${STATUS_LABEL[m.status]}`}>
-      <Frame status={m.status} className="widget" as="div">
+      <Frame status={emph ? m.status : 'ok'} className={`widget ${emph ? 'emph' : ''}`} as="div">
         <div className="w-head">
           <Icon name={m.def.icon} size={24} />
-          <span className="w-label mono">{labelOf(m, voice)}</span>
-          {m.def.estimated && <span className="tag mono">Estimado</span>}
-          <Badge status={m.status} />
+          <span className="w-label mono">{labelOf(m, voice)}{m.def.estimated && <sup className="est" title="Estimado">*</sup>}</span>
+          {m.status !== 'ok' && <Badge status={m.status} />}
         </div>
-        <div className="w-value">
+        <div className={`w-value v-${m.status}`}>
           <b className="num">{fmtValue(m)}</b><small className="unit">{m.def.unit}</small>
         </div>
         <div className="w-delta mono-r">{delta ? `${delta} vs. ${voice === 'self' ? 'tu' : 'su'} base` : ' '}</div>
-        <ChartBox m={m} axes />
+        <ChartBox m={m} />
       </Frame>
     </button>
   )
 }
 
 // ---------- Qué está pasando ----------
-export function DxBanner({ st, voice, onOpen }: { st: AstroState; voice: Voice; onOpen: (m: Metric) => void }) {
+export function DxBanner({ st, voice, cat, onOpen }: { st: AstroState; voice: Voice; cat: CategoryId; onOpen: (m: Metric) => void }) {
   const { dx } = st
-  if (st.worst === 'ok') return null
+  if (st.level === 0) return null
+  const here = dx.indicators.filter(m => m.def.categories.includes(cat))
+  const word = (m: Metric) => (m.def.bad === 'low' || (m.def.bad === 'both' && m.z < 0) ? m.def.low : m.def.high)
+  const title = dx.fromModel || !here.length ? dx.title : [...new Set(here.slice(0, 2).map(word))].join(' · ')
+  // la acción sale de la misma causa que el titular de esta pestaña
+  const action = dx.fromModel || !here.length ? dx.actions[0] : here[0].def.actions[here[0].status][0]
+  const elsewhere = dx.indicators.length - here.length
   return (
-    <Frame status={st.worst} crit={st.level === 3} className="dx enter" aria-label="Qué está pasando">
+    <Frame level={st.level} className="dx enter" aria-label="Qué está pasando">
       <div className="dx-what">
         <span className="dx-k mono">{voice === 'self' ? 'Qué te está pasando' : 'Qué está pasando'}</span>
-        <h2>{dx.title}</h2>
+        <h2>{title}</h2>
         {dx.fromModel && dx.target && <span className="dx-sys mono-r">Sistema · {dx.target}</span>}
       </div>
       <div className="dx-ind">
-        {dx.indicators.slice(0, 4).map(m => (
+        {here.slice(0, 4).map(m => (
           <button key={m.def.id} className={`ind press s-${m.status}`} onClick={() => onOpen(m)}>
             <span className="dot" />
             <span className="ind-label mono">{m.def.label}</span>
-            <b className="num">{fmtValue(m)}</b>
+            <b className="num">{fmtValue(m)}</b><span className="ind-unit mono-r">{m.def.unit}</span>
             {m.def.id !== 'circ' && <span className="ind-delta mono-r">{fmtDelta(m)}</span>}
           </button>
         ))}
+        {elsewhere > 0 && <span className="ind-more mono-r">+{elsewhere} en otras categorías</span>}
+        {!here.length && !elsewhere && <span className="ind-more mono-r">Sin indicadores fuera de rango</span>}
       </div>
       <div className="dx-do">
         <span className="dx-k mono">{voice === 'self' ? 'Qué puedes hacer' : 'Qué hacer'}</span>
-        <p>{dx.actions[0]}</p>
+        <p>{action}</p>
       </div>
     </Frame>
   )
@@ -92,7 +100,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
   const week = m.week.filter(p => p.v !== null)
   const sub = d.chart === 'hypno' ? (range === 'day' ? 'Anoche' : 'Últimas 7 noches') : range === 'day' ? 'Últimas 24 h' : 'Últimos 7 días'
   const exp = m.expected
-  const base = exp === null ? '—' : d.id === 'circ' ? '0 h' : `${exp.toFixed(Math.max(d.decimals, d.id === 'sleep' ? 1 : 0)).replace('.', ',')} ${d.unit}`
+  const base = exp === null ? '—' : d.id === 'circ' ? `${hhmm(SCHEDULE.sleepStart * 60)}–${hhmm(SCHEDULE.sleepEnd * 60)}` : `${exp.toFixed(Math.max(d.decimals, d.id === 'sleep' ? 1 : 0)).replace('.', ',')} ${d.unit}`
 
   // franja de datos clave
   const night = m.nights?.[m.nights.length - 1]
@@ -110,11 +118,12 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
     })()
     : (() => {
       const daily = d.chart === 'circadian'
-      const vs = (daily ? m.week : m.day).map(p => p.v).filter((v): v is number => v !== null)
+      const useWeek = daily || range === 'week'
+      const vs = (useWeek ? m.week : m.day).map(p => p.v).filter((v): v is number => v !== null)
       const f = (v: number) => (daily && v > 0 ? '+' : '') + v.toFixed(Math.max(d.decimals, daily ? 1 : 0)).replace('.', ',')
-      const span = daily ? '7 d' : '24 h'
+      const span = useWeek ? '7 d' : '24 h'
       return [
-        [voice === 'self' ? 'Tu base' : 'Su base', base],
+        d.id === 'circ' ? ['Dormiste anoche', sleptWindow(m)] : [voice === 'self' ? 'Tu base' : 'Su base', base],
         ['Desviación', fmtDelta(m) || '—'],
         [`Mín ${span}`, vs.length ? f(Math.min(...vs)) : '—'],
         [`Máx ${span}`, vs.length ? f(Math.max(...vs)) : '—'],
@@ -123,7 +132,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
 
   return (
     <div className="detail-body">
-      <Frame status={m.status} crit={m.status === 'alert' && st.level === 3} className="detail-main enter">
+      <Frame status={m.status} className="detail-main enter">
         <div className="dm-head">
           <span className="dm-icon"><Icon name={d.icon} size={44} stroke={1.5} /></span>
           <div className="dm-value">
@@ -133,8 +142,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
           <Segmented small label="Periodo" value={range} onChange={setRange}
             options={[{ id: 'day', label: d.chart === 'hypno' ? 'Sesión' : 'Hoy' }, { id: 'week', label: 'Historial' }]} />
         </div>
-        {d.chart === 'hypno' && <Legend items={[['var(--deep)', 'Profundo'], ['var(--light)', 'Ligero'], ['var(--rem)', 'REM'], ['var(--wake)', 'Despierto']]} />}
-        {d.chart === 'circadian' && range === 'day' && <Legend items={[['var(--cyan)', 'Horario previsto'], [m.status === 'ok' ? 'var(--lav)' : `var(--${m.status === 'warn' ? 'warn' : 'alert'})`, 'Su reloj interno'], ['var(--cyan)', 'Melatonina 24 h (punteado)']]} />}
+        {d.chart === 'circadian' && range === 'day' && <Legend items={[['rgba(243,230,207,.25)', 'Sueño previsto'], [m.status === 'ok' ? 'var(--ink)' : 'var(--warn)', 'Anoche'], ['rgba(243,230,207,.45)', 'Noches anteriores'], ['var(--lav)', 'Inicio de melatonina'], ['var(--ink)', 'Ahora']]} />}
         <div className={`dm-chart ${d.chart === 'circadian' && range === 'day' ? 'dial' : ''}`}>
           <ChartBox m={m} big range={range} kind={d.chart} />
         </div>
@@ -149,14 +157,12 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
         <Frame className="panel enter" style={{ '--k': 60 } as CSSProperties} quiet>
           <h3 className="mono">Registro</h3>
           <dl className="rec">
-            <div><dt>Origen</dt><dd>{dataset?.origin ?? '—'}</dd></div>
-            <div><dt>Periodo</dt><dd>{period(week.length && week[0].t > 1e9 ? week[0].t : crew.now - 6 * 86_400_000, crew.now)}</dd></div>
-            <div><dt>Estado</dt><dd className={`s-${m.status} st`}>{STATUS_LABEL[m.status]}</dd></div>
-            <div><dt>{voice === 'self' ? 'Tu base' : 'Base personal'}</dt><dd>{base}</dd></div>
-            <div><dt>Rama</dt><dd>{SCENARIO_LABEL(crew.scenario)}</dd></div>
+            <div><dt>Última lectura</dt><dd>{lastRead(crew.now)}</dd></div>
+            <div><dt>{d.id === 'circ' ? 'Horario previsto' : voice === 'self' ? 'Tu base' : 'Base personal'}</dt><dd>{base}</dd></div>
           </dl>
+          <p className="rec-foot mono-r">{dataset?.origin ?? '—'} · {period(week.length && week[0].t > 1e9 ? week[0].t : crew.now - 6 * 86_400_000, crew.now)} · {SCENARIO_LABEL(crew.scenario)}{d.estimated ? ' · valor estimado' : ''}</p>
         </Frame>
-        <Frame status={m.status === 'ok' ? undefined : m.status} quiet={m.status === 'ok'} className="panel enter" style={{ '--k': 120 } as CSSProperties}>
+        <Frame quiet className="panel enter" style={{ '--k': 120 } as CSSProperties}>
           <h3 className="mono">{voice === 'self' ? 'Qué puedes hacer' : 'Qué hacer'}</h3>
           <ul className="actions">{actions.map(a => <li key={a}><Icon name="check" size={20} />{a}</li>)}</ul>
           {related && dx.projection && <p className="proj"><b className="mono">24 h · </b>{dx.projection}</p>}
@@ -171,7 +177,7 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
               <Icon name="check" size={20} />{voice === 'self' ? 'Lo tienes en cuenta' : 'Revisado'} · {clock(ack.at)}
             </button>
           ) : (
-            <button className="btn primary block press" onClick={() => local.ack(st.astro.key, d.id)}>
+            <button className="btn primary block press" onClick={() => local.ack(st.astro.key, d.id, st.level)}>
               {voice === 'self' ? 'Lo tengo en cuenta' : 'Marcar revisión'}
             </button>
           )}
@@ -182,6 +188,21 @@ export function MetricDetail({ st, m, crew, voice }: { st: AstroState; m: Metric
       {support && <SupportSheet name={st.astro.name} metric={d.label} voice={voice} onClose={() => setSupport(false)} />}
     </div>
   )
+}
+
+/** Ventana real de sueño de anoche: inicio de la primera fase dormida + desfase del reloj. */
+function sleptWindow(m: Metric) {
+  const night = m.nights?.[m.nights.length - 1]
+  const first = night?.segs.find(s => s.s !== 0)
+  if (!night || !first) return '—'
+  const start = SCHEDULE.sleepStart * 60 + first.start + (m.value ?? 0) * 60
+  const wrap = (x: number) => ((x % 1440) + 1440) % 1440
+  return `${hhmm(wrap(start))}–${hhmm(wrap(start + night.hours * 60))}`
+}
+
+function lastRead(t: number) {
+  const d = new Date(t)
+  return `${d.toLocaleDateString('es', { day: 'numeric', month: 'short', timeZone: 'UTC' }).replace('.', '')} · ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')} UTC`
 }
 
 function period(t0: number, t1: number) {

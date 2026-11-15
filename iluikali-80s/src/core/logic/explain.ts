@@ -61,6 +61,22 @@ export interface Diagnosis {
   fromModel: boolean
   /** métricas que la causa del motor JEV implica */
   related: string[]
+  /** la causa del motor está respaldada por alguna de sus métricas en la lectura actual */
+  supported: boolean
+  /** tema de la causa: la frase humana y la acción salen del mismo tema y no se contradicen */
+  theme: Theme
+}
+
+export type Theme = 'calm' | 'rest' | 'fluids' | 'radiation' | 'bone' | 'oxygen' | 'stress'
+const THEME_OF: Record<string, Theme> = {
+  sleep: 'rest', circ: 'rest', melatonin: 'rest', energy: 'rest', hrv: 'rest', temp: 'fluids',
+  hydration: 'fluids', bp: 'fluids', rad: 'radiation', egg: 'radiation', bone: 'bone', spo2: 'oxygen', cortisol: 'stress',
+}
+const DRIVER_THEME: Record<string, Theme> = {
+  ELEVATED_ORBITAL_RADIATION_FLUX: 'radiation', ACUTE_SPE_RADIATION_AND_TACHYGASTRIA: 'radiation',
+  MELATONIN_PHASE_DELAY_AND_CORTISOL_DRIFT: 'rest', SPACE_FEVER_HYPERTHERMIA_AND_EVA_LOAD: 'fluids',
+  MILD_ALLOSTATIC_LOAD_FROM_BASELINE: 'stress', NEGATIVE_FLUID_BALANCE_TREND: 'fluids',
+  HYPERNATREMIC_HYPOVOLEMIC_DEHYDRATION: 'fluids', SEVERE_CIRCADIAN_DESYNCHRONY_AND_BONE_RESORPTION: 'rest',
 }
 
 export function diagnose(metrics: Metric[], last: Reading, status: Status, scenario: string): Diagnosis {
@@ -110,6 +126,8 @@ export function diagnose(metrics: Metric[], last: Reading, status: Status, scena
     projection: (pess ? jev.projPess : jev.projOpt) || jev.projPess || jev.projOpt,
     fromModel: modelLeads,
     related: [...related],
+    supported: !nominal && supported,
+    theme: modelLeads ? DRIVER_THEME[jev.driver] ?? (top ? THEME_OF[top.def.id] : 'calm') : top ? THEME_OF[top.def.id] ?? 'rest' : 'calm',
   }
 }
 

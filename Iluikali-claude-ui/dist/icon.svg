@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Iluikali">
+  <rect width="512" height="512" fill="#141416"/>
+  <g>
+    <path d="M128 54 202 190H54Z" fill="#6FA8DC"/>
+    <rect x="310" y="54" width="148" height="148" rx="26" fill="#5FB37E"/>
+    <circle cx="128" cy="384" r="74" fill="#C9A75A"/>
+    <polygon points="384.0,306.0 401.6,359.7 458.2,359.9 412.5,393.3 429.8,447.1 384.0,414.0 338.2,447.1 355.5,393.3 309.8,359.9 366.4,359.7" fill="#A99BD0"/>
+  </g>
+</svg>

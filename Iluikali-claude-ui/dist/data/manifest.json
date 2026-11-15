@@ -1,0 +1,5 @@
+{
+  "readings": "crew-hourly.csv",
+  "baselines": "baselines.csv",
+  "scenario": "OPTIMISTIC_MITIGATED"
+}

@@ -28,7 +28,7 @@ Files: src/model.ts, src/model.test.ts, src/data.ts.
 - [x] Run npm test.
 
 ### Task 2: Frontend and complete interaction flow
-Files: src/App.tsx, src/components.tsx, src/charts.tsx, src/styles.css.
+Files: src/App.tsx, src/components.tsx, src/charts.tsx, src/app.css.
 - [x] Build shared overview and individual categories in fixed overview order.
 - [x] Add metric chart, evidence, time controls and guided check-in dialog.
 - [x] Add local journal, demo settings, responsive layout and keyboard behavior.
@@ -39,4 +39,6 @@ Files: design-qa.md, README.md, frontend decision record.
 - [x] Start preview; inspect overview, individual and metric states in cloud browser. Direct desktop loopback used after terminal.local ingress failure.
 - [x] Complete check-in, reload and confirm persisted journal; inspect offline state.
 - [x] Verify contrast, clipping, dialogs, keyboard and narrow layout; fix defects.
-- [ ] Run full checks, commit feature branch, push and create a draft pull request.
+- [x] Run full checks, commit feature branch, upload through the GitHub connector and create draft pull request #1.
+
+Delivered: https://github.com/Lamdevelopper/Error-Capa-8/pull/1

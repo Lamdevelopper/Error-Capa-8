@@ -1,3 +1,70 @@
-.p {
+html, body {
+  margin: 0px;
+  background-color: black;
+}   
+#Grid { 
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+}
+
+#Astroview {
+    background-color: rgb(72, 72, 72);
+}
+
+#SeparateV {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 1fr;
+}
+
+#Symbol {
+    display: flex;
+    align-items: center;
+}
+
+#SeparateH {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    align-items: center;
+}
+
+#L, #C, #R {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100px;
+}
+
+#L img {
+    width: 100%;
+    height: 100%;
+}
+
+#C img {
+    width: 100%;
+    height: 100%;
+    transform: translate(10px, 10px);
+}
+
+#R img {
+    width: 100%;
+    height: 100%;
+}
+#TextOverImage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+p {
     color: aqua;
+    margin: 10px;
+    width: 100%;  
+    text-align: center;
 }

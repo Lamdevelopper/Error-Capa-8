@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="200mm"
+   height="200mm"
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="Sleep.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="false"
+     inkscape:zoom="0.93806818"
+     inkscape:cx="384.83343"
+     inkscape:cy="430.13931"
+     inkscape:window-width="2160"
+     inkscape:window-height="1334"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="302.74985"
+       y="261.17505"
+       width="179.09146"
+       height="164.16717"
+       id="rect35" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       d="m 99.422935,10.435901 c -47.900177,-6.7e-5 -86.730955,40.09353 -86.730867,89.551457 2.21e-4,49.457702 38.830908,89.550952 86.730867,89.550882 47.899965,8e-5 86.730655,-40.09317 86.730875,-89.550882 C 145.79371,200.73895 -15.195841,120.98849 99.422935,10.435901 Z"
+       style="stroke-width:0.295572"
+       id="path3"
+       sodipodi:nodetypes="ccccc" />
+    <ellipse
+       id="path7"
+       style="fill:#000000;stroke:#000000;stroke-width:0.295572"
+       cx="113.77969"
+       cy="56.334286"
+       rx="0.029758899"
+       ry="0.029594641" />
+    <path
+       d="m 99.422935,10.435901 c -47.900177,-6.7e-5 -86.730955,40.09353 -86.730867,89.551457 2.21e-4,49.457702 38.830908,89.550952 86.730867,89.550882 47.899965,8e-5 86.730655,-40.09317 86.730875,-89.550882 C 145.79371,200.73895 -15.195841,120.98849 99.422935,10.435901 Z"
+       style="stroke-width:0.295572"
+       id="path9"
+       sodipodi:nodetypes="ccccc" />
+    <text
+       xml:space="preserve"
+       transform="matrix(7.6120013,0,0,8.4669778,-2216.5169,-2164.6865)"
+       id="text35"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.42817px;font-family:Forte;-inkscape-font-specification:'Forte, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect35);fill:#000000;fill-opacity:1"><tspan
+         x="302.75"
+         y="267.74088"
+         id="tspan1">Z</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.4419px;font-family:Forte;-inkscape-font-specification:'Forte, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke-width:4.04439"
+       x="130.68434"
+       y="70.709793"
+       id="text36"
+       transform="scale(0.96192433,1.0395828)"><tspan
+         sodipodi:role="line"
+         id="tspan36"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:49.4419px;font-family:Forte;-inkscape-font-specification:'Forte, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:4.04439"
+         x="130.68434"
+         y="70.709793">Z</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:39.2088px;font-family:Forte;-inkscape-font-specification:'Forte, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke-width:1.74231"
+       x="159.51833"
+       y="49.872715"
+       id="text36-8"
+       transform="scale(0.97374473,1.0269632)"><tspan
+         sodipodi:role="line"
+         id="tspan36-2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:39.2088px;font-family:Forte;-inkscape-font-specification:'Forte, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:1.74231"
+         x="159.51833"
+         y="49.872715">Z</tspan></text>
+  </g>
+</svg>

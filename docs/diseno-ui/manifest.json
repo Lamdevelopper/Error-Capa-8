@@ -1,0 +1,74 @@
+[
+  {
+    "archivo": "01-inicio/01-apple-con-graficas.png",
+    "descripcion": "Inicio: primera propuesta Apple",
+    "original": "exec-be27c898-785c-419b-906a-be3289c0a372.png",
+    "sha256": "700bce9d910ea832dc31747f1f96a1fdf1b07c0bd5472e87d92ec8903d6cede6"
+  },
+  {
+    "archivo": "01-inicio/02-apple-simplificado.png",
+    "descripcion": "Inicio: variante simplificada",
+    "original": "exec-4ec60bc1-1299-452c-a414-f9f3217dfc2e.png",
+    "sha256": "e42b4eb476ed61a92047de7079018db024a8b2afcd382f3401193e49aaca0378"
+  },
+  {
+    "archivo": "01-inicio/03-apple-avatar-pixel.png",
+    "descripcion": "Inicio: avatar y tipografía",
+    "original": "exec-9604ee0b-4de6-46c8-9914-06e0159cca5e.png",
+    "sha256": "b606ac17ee2ff172c9bbbaec1ee45934371f7c980d8221de7008711024f2e209"
+  },
+  {
+    "archivo": "01-inicio/04-tech-80s-seleccionado.png",
+    "descripcion": "Inicio: dirección 80s elegida",
+    "original": "exec-4d746632-56f7-49c2-be6e-891adc66d293.png",
+    "sha256": "1ecb529e232c563118df3a8a11002da957e212c72788a849512eeac31896f0bc"
+  },
+  {
+    "archivo": "02-tripulante/01-sueno-energia.png",
+    "descripcion": "Tripulante: indicadores de sueño y energía",
+    "original": "exec-c744f770-d716-4e59-9dcf-f990cc1987ae.png",
+    "sha256": "2ddf025920d715516098adfe16aa77aee6ef39e95e900d6e276fea8f0c6c02fc"
+  },
+  {
+    "archivo": "03-detalle/01-horas-sueno.png",
+    "descripcion": "Detalle: horas de sueño",
+    "original": "exec-7c39bc70-d4eb-4c9b-9fc6-3d63eff75480.png",
+    "sha256": "197811f1ef0495883ee853c5742364014212faf317f65c23313637b3497e374d"
+  },
+  {
+    "archivo": "04-widgets/01-circadian-balance.png",
+    "descripcion": "Widget: balance circadiano con sol y luna",
+    "original": "exec-ecb3a1df-a937-49be-9c0f-d668a0d32eae.png",
+    "sha256": "42d2cd6b5cb09b6fe6cd58df8eb8af8d351d0285dabb70663657db3bd09710be"
+  },
+  {
+    "archivo": "04-widgets/02-rem-fases-sueno.png",
+    "descripcion": "Widget: REM y fases del sueño",
+    "original": "exec-d2dd48b4-9d34-4d75-a358-28b5892343df.png",
+    "sha256": "99cedbea586b2bbd901cd75cf5b446f0dd58c471c16d77b60e4e3e59c43275d2"
+  },
+  {
+    "archivo": "05-paginas-agrupadas/01-inicio-y-categorias.png",
+    "descripcion": "Lámina: inicio y tres categorías",
+    "original": "exec-6575c07d-3175-47ec-aa70-d0fd6babcb80.png",
+    "sha256": "ef32d72099d11261931b5c94b84e766b092d6daa33331e4ca80d367d053e3404"
+  },
+  {
+    "archivo": "03-detalle/02-lamina-salud-general.png",
+    "descripcion": "Lámina: seis detalles de salud general",
+    "original": "exec-1cb73357-440a-4433-9d76-3615dfa5239e.png",
+    "sha256": "8eb45ae3d62d24b4ab97b61b9083e7dbb92ce2cb2be97e8be93fc09faa747a83"
+  },
+  {
+    "archivo": "03-detalle/03-lamina-sueno-mente.png",
+    "descripcion": "Lámina: sueño, circadiano, HRV, cortisol y AFI",
+    "original": "exec-21e7ec59-63a5-4aa8-8da7-6993a6a58c52.png",
+    "sha256": "c76ee964e7df746f0bddd17b21230409e7b417bc9607b28a4a09429d3134ffa2"
+  },
+  {
+    "archivo": "06-estados-y-acciones/01-actividad-laboratorio-importacion-apoyo-error.png",
+    "descripcion": "Lámina: actividad, laboratorio, importación, apoyo y error",
+    "original": "exec-d49ecf0b-c150-4c11-8449-42fb32a7429a.png",
+    "sha256": "82570bc41e14806edc3c76fd1b7b0b0d29de97aa88fe91d8fc8cc7eedb93d75d"
+  }
+]

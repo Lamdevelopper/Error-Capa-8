@@ -1,0 +1,503 @@
+[
+  {
+    "astroId": "triangle",
+    "metricId": "sleep",
+    "value": 7.0,
+    "capturedAt": "2026-11-12T07:00:00Z",
+    "recordId": "ejemplo-sleep-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "periodStart": "2026-11-11T23:00:00Z",
+    "periodEnd": "2026-11-12T07:00:00Z"
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "sleep",
+    "value": 7.25,
+    "capturedAt": "2026-11-13T07:00:00Z",
+    "recordId": "ejemplo-sleep-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "periodStart": "2026-11-12T23:00:00Z",
+    "periodEnd": "2026-11-13T07:00:00Z"
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "sleep",
+    "value": 7.5,
+    "capturedAt": "2026-11-14T07:00:00Z",
+    "recordId": "ejemplo-sleep-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "periodStart": "2026-11-13T23:00:00Z",
+    "periodEnd": "2026-11-14T07:00:00Z",
+    "sleepStages": [
+      {
+        "stage": "light",
+        "startAt": "2026-11-13T23:00:00Z",
+        "endAt": "2026-11-14T01:00:00Z"
+      },
+      {
+        "stage": "deep",
+        "startAt": "2026-11-14T01:00:00Z",
+        "endAt": "2026-11-14T02:30:00Z"
+      },
+      {
+        "stage": "rem",
+        "startAt": "2026-11-14T02:30:00Z",
+        "endAt": "2026-11-14T04:00:00Z"
+      },
+      {
+        "stage": "awake",
+        "startAt": "2026-11-14T04:00:00Z",
+        "endAt": "2026-11-14T04:30:00Z"
+      },
+      {
+        "stage": "light",
+        "startAt": "2026-11-14T04:30:00Z",
+        "endAt": "2026-11-14T06:00:00Z"
+      },
+      {
+        "stage": "rem",
+        "startAt": "2026-11-14T06:00:00Z",
+        "endAt": "2026-11-14T07:00:00Z"
+      }
+    ]
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "circ",
+    "value": 1.1,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-circ-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "circ",
+    "value": 0.9,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-circ-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "circ",
+    "value": 0.7,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-circ-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "circ",
+    "value": 0.5,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-circ-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hrv",
+    "value": 49,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-hrv-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hrv",
+    "value": 52,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-hrv-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hrv",
+    "value": 53,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-hrv-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hrv",
+    "value": 55,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-hrv-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "cortisol",
+    "value": 12,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-cortisol-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "cortisol",
+    "value": 11,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-cortisol-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "cortisol",
+    "value": 10.5,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-cortisol-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "cortisol",
+    "value": 10,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-cortisol-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "afi",
+    "value": 38,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-afi-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "afi",
+    "value": 35,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-afi-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "afi",
+    "value": 32,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-afi-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "afi",
+    "value": 30,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-afi-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hr",
+    "value": 76,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-hr-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hr",
+    "value": 74,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-hr-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hr",
+    "value": 73,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-hr-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "hr",
+    "value": 72,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-hr-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "bp",
+    "value": 124,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-bp-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "value2": 82
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "bp",
+    "value": 122,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-bp-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "value2": 81
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "bp",
+    "value": 121,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-bp-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "value2": 80
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "bp",
+    "value": 120,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-bp-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true,
+    "value2": 80
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "spo2",
+    "value": 97,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-spo2-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "spo2",
+    "value": 98,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-spo2-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "spo2",
+    "value": 97,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-spo2-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "spo2",
+    "value": 98,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-spo2-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "resp",
+    "value": 17,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-resp-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "resp",
+    "value": 16,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-resp-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "resp",
+    "value": 17,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-resp-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "resp",
+    "value": 16,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-resp-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "temp",
+    "value": 36.6,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-temp-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "temp",
+    "value": 36.8,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-temp-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "temp",
+    "value": 36.5,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-temp-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "temp",
+    "value": 36.7,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-temp-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "move",
+    "value": 35,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-move-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "move",
+    "value": 40,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-move-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "move",
+    "value": 45,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-move-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "osteo",
+    "value": 19.2,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-osteo-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "osteo",
+    "value": 19.5,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-osteo-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "osteo",
+    "value": 19.8,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-osteo-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "osteo",
+    "value": 20,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-osteo-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "rad",
+    "value": 0.14,
+    "capturedAt": "2026-11-11T12:00:00Z",
+    "recordId": "ejemplo-rad-1",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "rad",
+    "value": 0.16,
+    "capturedAt": "2026-11-12T12:00:00Z",
+    "recordId": "ejemplo-rad-2",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "rad",
+    "value": 0.18,
+    "capturedAt": "2026-11-13T12:00:00Z",
+    "recordId": "ejemplo-rad-3",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "triangle",
+    "metricId": "rad",
+    "value": 0.2,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-rad-4",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  },
+  {
+    "astroId": "circle",
+    "metricId": "spo2",
+    "value": null,
+    "capturedAt": "2026-11-14T12:00:00Z",
+    "recordId": "ejemplo-ausente",
+    "source": "Ejemplo sintético",
+    "synthetic": true
+  }
+]

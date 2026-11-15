@@ -1,0 +1,9 @@
+{
+  "name": "Iluikali",
+  "short_name": "Iluikali",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0b0b0d",
+  "theme_color": "#0b0b0d",
+  "start_url": "./"
+}

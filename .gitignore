@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.log
+.codeboarding/logs/
+.DS_Store
+__pycache__/
+.env
